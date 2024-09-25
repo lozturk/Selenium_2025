@@ -1,0 +1,12 @@
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="UI" parallel="classes" thread-count="1" configfailurepolicy="continue">
+    <test name="Selenium Automation tests 2025">
+    <!-- Add your test classes here -->
+        <classes>
+            <class name="com.company.tests.LoginTest"/>
+        </classes>
+    </test>
+</suite>
+
+
