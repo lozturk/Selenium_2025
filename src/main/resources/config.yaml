@@ -11,7 +11,7 @@ dev:
   dbUsername:
   dbPassword:
   grid: seleniumGrid
-  browser: firefox
+  browser: chrome
 test:
   url:
   username:

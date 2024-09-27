@@ -1,14 +1,15 @@
 package com.company.utilities;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+@Log4j2
 public class DriverFactory {
 
     private static final Supplier<WebDriver> chromeSupplier = () -> {
