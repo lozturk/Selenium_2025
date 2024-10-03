@@ -7,9 +7,9 @@ import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
 @Log4j2
-public class SignUpLoginPage extends BasePage {
+public class LoginPage extends BasePage {
 
-    public SignUpLoginPage(WebDriver driver) {
+    public LoginPage(WebDriver driver) {
         super(driver);
     }
 

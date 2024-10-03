@@ -13,6 +13,20 @@ dev:
   grid: seleniumGrid
   browser: chrome
 test:
+  url: https://automationexercise.com/
+  username:
+  password:
+  baseURI:
+  service_username:
+  service_password:
+  database:
+  dbService:
+  pool: 5
+  dbUsername:
+  dbPassword:
+  grid: seleniumGrid
+  browser: chrome
+staging:
   url:
   username:
   password:

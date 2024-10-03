@@ -62,17 +62,28 @@
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
         </dependency>
-
-
-
-
-
-
-
-
-
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/suites/Login.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <properties>
+                        <name>suitethreadpoolsize</name>
+                        <value>2</value>
+                    </properties>
+                </configuration>
+            </plugin>
+            <!-- Other plugins and configurations -->
+        </plugins>
+    </build>
+
 
 
 </project>

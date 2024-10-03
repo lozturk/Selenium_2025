@@ -1,13 +1,9 @@
-
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="UI" parallel="classes" thread-count="2" configfailurepolicy="continue">
-    <test name="Selenium Automation tests 2025">
-    <!-- Add your test classes here -->
+<suite name="Login Suite" parallel="classes" thread-count="1" configfailurepolicy="continue">
+    <test name="Automation exercise 2025 Tests">
         <classes>
             <class name="com.company.tests.HomePageTest"/>
             <class name="com.company.tests.RegisterUserTest"/>
         </classes>
     </test>
 </suite>
-
-
