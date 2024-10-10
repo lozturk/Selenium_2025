@@ -12,8 +12,6 @@ public class Utilities {
     protected static final String PATH_TO_STAGE_DATA_PROPERTIES = "stage_data.properties";
     protected static String pathToDataProperties;
 
-
-
     public static String getPathToDataProperties(String environment) {
 
         switch (environment) {

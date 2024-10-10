@@ -20,22 +20,54 @@ public class LoginPage extends BasePage {
     public WebElement nameTextBox;
 
     @FindBy(xpath = "//*[@id=\"form\"]/div/div/div[3]/div/form/input[3]")
-    public WebElement emailTextBox;
+    public WebElement emailTextBoxForRegister;
 
     @FindBy(xpath = "//*[@id=\"form\"]/div/div/div[3]/div/form/button")
     public WebElement signUpButton;
 
+    @FindBy(xpath = "//h2[contains(text(),'Login to your account')]")
+    public WebElement logInText;
 
-    public void verifySignInIsDisplayed(){
+    @FindBy(xpath = "//*[@id=\"form\"]/div/div/div[1]/div/form/input[2]")
+    public WebElement emailTextBoxForSignIn;
+
+    @FindBy(name = "password")
+    public WebElement passwordTextBoxForSignIn;
+
+    @FindBy(xpath = "//button[contains(text(),'Login')]")
+    public WebElement logInButton;
+
+
+    public void verifySignUpIsDisplayed(){
         webDriverWait.until((d) -> signUpText.isDisplayed());
         log.debug(signUpText.getText());
         Assert.assertTrue(signUpText.isDisplayed());
     }
 
+    public void verifyLogInIsDisplayed(){
+        webDriverWait.until((d) -> logInText.isDisplayed());
+        log.debug(logInText.getText());
+        Assert.assertTrue(logInText.isDisplayed());
+    }
+
     public void register (String name, String email) {
         nameTextBox.sendKeys(name);
-        emailTextBox.sendKeys(email);
+        log.info(name);
+        emailTextBoxForRegister.sendKeys(email);
+        log.info(email);
         signUpButton.click();
+        log.info("Sign up button is clicked successfully.");
+    }
+
+    public void logIn (String email, String password) {
+        webDriverWait.until((d)-> emailTextBoxForSignIn.isEnabled());
+        emailTextBoxForSignIn.sendKeys(email);
+        log.info("Email : {} ", email);
+        webDriverWait.until((d)-> passwordTextBoxForSignIn.isEnabled());
+        passwordTextBoxForSignIn.sendKeys(password);
+        log.info("Password : {} ",password);
+        logInButton.click();
+        log.info("Login button is clicked successfully.");
     }
 
 

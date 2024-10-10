@@ -171,6 +171,7 @@ public class SignUpPage extends BasePage{
         // enterName(name);
         // enterEmail(email);
         enterPassword(password);
+        log.info(password);
         enterDateOfBirth(day, month, year);
     }
 

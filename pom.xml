@@ -72,12 +72,8 @@
                 <version>3.2.5</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/suites/Login.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/suites/all_suites.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <properties>
-                        <name>suitethreadpoolsize</name>
-                        <value>2</value>
-                    </properties>
                 </configuration>
             </plugin>
             <!-- Other plugins and configurations -->

@@ -25,6 +25,9 @@ public class BaseTest {
     protected static String ENVIRONMENT,PATH_TO_PROPERTIES;
     protected static final String NAME = "name";
     protected static final String EMAIL = "email";
+    protected static final String REGISTERED_USER_NAME = "registered_user_name";
+    protected static final String REGISTERED_USER_EMAIL = "registered_user_email";
+    protected static final String REGISTERED_USER_PASSWORD = "registered_user_password";
     protected PropertiesReader propertyReader;
     protected Faker faker;
     protected String name,email,password,month,year,firstName,lastName,company,address,address2,country,state,city,zip,mobileNumber;

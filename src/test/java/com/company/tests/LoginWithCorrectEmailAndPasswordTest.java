@@ -1,0 +1,50 @@
+package com.company.tests;
+
+import com.company.pages.*;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.exec.util.StringUtils;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+@Log4j2
+public class LoginWithCorrectEmailAndPasswordTest extends BaseTest {
+
+    protected HomePage homePage;
+    protected LoginPage loginPage;
+    protected SignUpPage signUpPage;
+    protected AccountCreatedPage accountCreatedPage;
+    protected NavigationBar navigationBar;
+
+    @DataProvider(name = "userData")
+    public Object[][] getUserData() {
+        name = getPropertyValue(REGISTERED_USER_NAME);
+        email = getPropertyValue(REGISTERED_USER_EMAIL);
+        password = getPropertyValue(REGISTERED_USER_PASSWORD);
+        return new Object[][]{{name,email,password}};
+    }
+
+    @BeforeMethod
+    public void initiatePages(){
+        log.info("Initiating Pages!...");
+        homePage = new HomePage(driver);
+        loginPage = new LoginPage(driver);
+        signUpPage = new SignUpPage(driver);
+        accountCreatedPage = new AccountCreatedPage(driver);
+        navigationBar = new NavigationBar(driver);
+    }
+
+    @Test(dataProvider = "userData")
+    public void loginWithCorrectEmailAndPassword (String name,String email,String password){
+        homePage.navigateToHomePage();
+        homePage.verifyHomeTextIsDisplayed();
+        homePage.clickSignUpButton();
+        loginPage.verifyLogInIsDisplayed();
+        loginPage.logIn(email,password);
+        navigationBar.verifyLoggedInTextIsDisplayed(name);
+    }
+
+
+
+
+}

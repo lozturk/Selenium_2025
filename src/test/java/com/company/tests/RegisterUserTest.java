@@ -5,8 +5,6 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.exec.util.StringUtils;
 import org.testng.annotations.*;
 
-import java.time.LocalDateTime;
-
 @Log4j2
 public class RegisterUserTest extends BaseTest {
 
@@ -19,7 +17,7 @@ public class RegisterUserTest extends BaseTest {
 
     @DataProvider(name = "userData")
     public Object[][] getUserData() {
-        name = getPropertyValue(NAME);
+        name = faker.name().fullName();
         email = faker.internet().emailAddress();
         password = faker.internet().password();
         day = faker.number().numberBetween(1,31);
@@ -56,7 +54,7 @@ public class RegisterUserTest extends BaseTest {
         homePage.navigateToHomePage();
         homePage.verifyHomeTextIsDisplayed();
         homePage.clickSignUpButton();
-        loginPage.verifySignInIsDisplayed();
+        loginPage.verifySignUpIsDisplayed();
         loginPage.register(name, email);
         signUpPage.verifySignUpIsDisplayed();
         signUpPage.clickOnMrCheckBox();
