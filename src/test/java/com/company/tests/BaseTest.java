@@ -6,6 +6,7 @@ import com.company.utilities.Utilities;
 import com.github.javafaker.Faker;
 import io.qameta.allure.Allure;
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -30,13 +31,13 @@ public class BaseTest {
     protected static final String REGISTERED_USER_PASSWORD = "registered_user_password";
     protected PropertiesReader propertyReader;
     protected Faker faker;
-    protected String name,email,password,month,year,firstName,lastName,company,address,address2,country,state,city,zip,mobileNumber;
-    protected int day;
+    protected String name,email,password,month,year,firstName,lastName,company,address,address2,country,state,city,zip,mobileNumber,product_1,product_2;
+    protected int day,selected_item_count;
 
 
     @BeforeClass
     public void doBasics(){
-        ENVIRONMENT = System.getProperty("test.environment");
+        ENVIRONMENT = System.getProperty("test.environment").toUpperCase();
         log.info("ENVIRONMENT: {}", ENVIRONMENT);
         PATH_TO_PROPERTIES = Utilities.getPathToDataProperties(ENVIRONMENT);
         propertyReader = new PropertiesReader(PATH_TO_PROPERTIES);
@@ -49,9 +50,9 @@ public class BaseTest {
         browser = Configuration.getInstance().getProperty("browser");
         log.info("Setting up the driver for browser: {}", browser);
         driver = DriverFactory.getDriver(browser);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         testName = testResult.getMethod().getMethodName();
         log.info("Starting test: {} in environment: {}", testName, ENVIRONMENT);
     }
@@ -88,6 +89,5 @@ public class BaseTest {
         long executionTimeMillis =  (endTime - startTime) / 1000;
         log.info("Test execution time: {} seconds", executionTimeMillis);
     };
-
 
 }
