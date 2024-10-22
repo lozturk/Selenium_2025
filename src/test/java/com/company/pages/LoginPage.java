@@ -12,9 +12,9 @@ public class LoginPage extends BasePage {
     public LoginPage(WebDriver driver) {
         super(driver);
     }
-
+    
     @FindBy(xpath = "//*[@id=\"form\"]/div/div/div[3]/div/h2")
-    public WebElement signUpText;
+    public WebElement newUserSignUpText;
 
     @FindBy(xpath = "//*[@id=\"form\"]/div/div/div[3]/div/form/input[2]")
     public WebElement nameTextBox;
@@ -39,9 +39,9 @@ public class LoginPage extends BasePage {
 
 
     public void verifySignUpIsDisplayed(){
-        webDriverWait.until((d) -> signUpText.isDisplayed());
-        log.debug(signUpText.getText());
-        Assert.assertTrue(signUpText.isDisplayed());
+        webDriverWait.until((d) -> newUserSignUpText.isDisplayed());
+        log.debug(newUserSignUpText.getText());
+        Assert.assertTrue(newUserSignUpText.isDisplayed());
     }
 
     public void verifyLogInIsDisplayed(){

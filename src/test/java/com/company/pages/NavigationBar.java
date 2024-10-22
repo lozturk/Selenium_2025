@@ -1,10 +1,11 @@
 package com.company.pages;
 
-import lombok.extern.apachecommons.CommonsLog;
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
 @Log4j2
@@ -13,39 +14,37 @@ public class NavigationBar extends BasePage{
         super(driver);
     }
 
-    @FindBy(xpath = "//a[contains(text(), ' Home')]")
-    protected WebElement homeButton;
+    private final By homeButton = By.xpath("//*[text() = ' Home']");
 
     @FindBy(xpath = "//a[contains(text(), ' Products')]")
-    protected WebElement productsButton;
+    private WebElement productsButton;
 
     @FindBy(xpath = "//a[contains(text(), ' Cart')]")
-    protected WebElement cartButton;
+    private WebElement cartButton;
 
     @FindBy(xpath = "//a[contains(text(), ' Logout')]")
-    protected WebElement logOutButton;
+    private WebElement logOutButton;
 
     @FindBy(xpath = "//a[contains(text(), ' Delete Account')]")
-    protected WebElement deleteAccountButton;
+    private WebElement deleteAccountButton;
 
     @FindBy(xpath = "//a[contains(text(), ' Test Cases')]")
-    protected WebElement testCasesButton;
+    private WebElement testCasesButton;
 
     @FindBy(xpath = "//a[contains(text(), ' API Testing')]")
-    protected WebElement apiTestingButton;
+    private WebElement apiTestingButton;
 
     @FindBy(xpath = "//a[contains(text(), ' Video Tutorials')]")
-    protected WebElement videoTutorialsButton;
+    private WebElement videoTutorialsButton;
 
     @FindBy(xpath = "//a[contains(text(), ' Contact us')]")
-    protected WebElement contactUsButton;
+    private WebElement contactUsButton;
 
     @FindBy(xpath = "//a[contains(text(), ' Logged in as')]")
-    protected WebElement loggedInText;
+    private WebElement loggedInText;
 
     public void clickOnHomeButton(){
-        webDriverWait.until((d)->homeButton.isDisplayed());
-        homeButton.click();
+        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(homeButton)).click();
         log.info("Home button is clicked successfully.");
     }
 
@@ -96,7 +95,6 @@ public class NavigationBar extends BasePage{
         contactUsButton.click();
         log.info("Contact us button is clicked successfully.");
     }
-
 
     public void verifyLoggedInTextIsDisplayed(String name) {
         webDriverWait.until((d)->loggedInText.isDisplayed());

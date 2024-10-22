@@ -59,20 +59,29 @@ public class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(ITestResult testResult){
-        if (testResult.getStatus() == ITestResult.FAILURE){
-            Allure.addAttachment("Screenshot",new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
-            log.info("{} failed...", testName);
+
+        try {
+
+            if (testResult.getStatus() == ITestResult.FAILURE){
+                Allure.addAttachment("Screenshot",new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+                log.info("{} failed...", testName);
+            }
+
+            if (testResult.getStatus() == ITestResult.SUCCESS) {
+                log.info("{} passed successfully...", testName);
+            }
+
+            if (driver != null)
+                driver.quit();
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }  finally {
+            log.info("Running finally...");
+            if ((driver != null && testResult.getStatus() == ITestResult.FAILURE )
+                    || (driver != null && getTestExecutionTime(testResult) >= 90))
+                driver.quit();
         }
-
-        if (testResult.getStatus() == ITestResult.SUCCESS) {
-            log.info("{} passed successfully...", testName);
-        }
-
-        if (driver != null)
-            driver.quit();
-
-        getTestExecutionTime(testResult);
-
     }
 
     protected String getPropertyValue(String key){
@@ -83,11 +92,12 @@ public class BaseTest {
         return propertyReader.getProperty(key);
     }
 
-    protected void getTestExecutionTime(ITestResult testResult){
+    protected long getTestExecutionTime(ITestResult testResult){
         long startTime = testResult.getStartMillis();
         long endTime = testResult.getEndMillis();
-        long executionTimeMillis =  (endTime - startTime) / 1000;
-        log.info("Test execution time: {} seconds", executionTimeMillis);
+        long executionTimeSeconds =  (endTime - startTime) / 1000;
+        log.info("Test execution time: {} seconds", executionTimeSeconds);
+        return executionTimeSeconds;
     };
 
 }

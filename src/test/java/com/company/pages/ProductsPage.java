@@ -47,9 +47,7 @@ public class ProductsPage extends BasePage{
                         .or(ExpectedConditions.visibilityOfElementLocated(By.xpath(addToCartButton)),
                                 ExpectedConditions.elementToBeClickable(By.xpath(addToCartButton))));
         driver.findElement(By.xpath(addToCartButton)).click();
-        log.info("Clicked on add to cart button successfully.");
-
-
+        log.info("Clicked on add to cart button successfully for {}.", product);
     }
 
 }
