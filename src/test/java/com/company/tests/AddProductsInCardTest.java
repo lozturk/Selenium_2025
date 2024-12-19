@@ -26,6 +26,7 @@ public class AddProductsInCardTest extends BaseTest{
 
     @DataProvider(name = "productData")
     public Object[][] getProductData() {
+        log.info("Initiating DataProvider!...");
         product_1 = getPropertyValue("product_1");
         product_2 = getPropertyValue("product_2");
         selected_item_count = Integer.parseInt(getPropertyValue("selected_item_count"));

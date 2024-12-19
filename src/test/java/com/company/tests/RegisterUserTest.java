@@ -17,6 +17,7 @@ public class RegisterUserTest extends BaseTest {
 
     @DataProvider(name = "userData")
     public Object[][] getUserData() {
+        log.info("Initiating DataProvider!...");
         name = faker.name().fullName();
         email = faker.internet().emailAddress();
         password = faker.internet().password();

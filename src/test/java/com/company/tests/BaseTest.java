@@ -10,9 +10,8 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.*;
 import com.company.utils.PropertiesReader;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.*;
+
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -29,18 +28,9 @@ public abstract class BaseTest {
     protected Faker faker;
     protected int day,selected_item_count;
 
-    public void setDriver(WebDriver driverInstance) {
-        threadDriver.set(driverInstance);
-    }
-    public static WebDriver getDriver() {
-        log.info("Thread name : {}", Thread.currentThread().getName());
-        log.info("Thread id : {}", Thread.currentThread().getId());
-        return threadDriver.get();
-    }
-
-
     @BeforeClass
-    public void doBasics(){
+    public void setUpEnvironmentProperties(){
+        log.info("Setting up the environment properties.");
         ENVIRONMENT = System.getProperty(Constants.TEST_ENVIRONMENT).toUpperCase();
         PATH_TO_PROPERTIES = Utilities.getPathToDataProperties(ENVIRONMENT);
         propertyReader = new PropertiesReader(PATH_TO_PROPERTIES);
@@ -108,6 +98,15 @@ public abstract class BaseTest {
         long executionTimeSeconds =  (endTime - startTime) / 1000;
         log.info("Test execution time: {} seconds", executionTimeSeconds);
         return executionTimeSeconds;
+    }
+
+    public void setDriver(WebDriver driverInstance) {
+        threadDriver.set(driverInstance);
+    }
+    public static WebDriver getDriver() {
+        log.info("Thread name : {}", Thread.currentThread().getName());
+        log.info("Thread id : {}", Thread.currentThread().getId());
+        return threadDriver.get();
     }
 
 }

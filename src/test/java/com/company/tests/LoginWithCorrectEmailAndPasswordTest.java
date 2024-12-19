@@ -18,6 +18,7 @@ public class LoginWithCorrectEmailAndPasswordTest extends BaseTest {
 
     @DataProvider(name = "userData")
     public Object[][] getUserData() {
+        log.info("Initiating DataProvider!...");
         name = getPropertyValue(Constants.REGISTERED_USER_NAME);
         email = getPropertyValue(Constants.REGISTERED_USER_EMAIL);
         password = getPropertyValue(Constants.REGISTERED_USER_PASSWORD);
