@@ -108,6 +108,6 @@ public abstract class BaseTest {
         long executionTimeSeconds =  (endTime - startTime) / 1000;
         log.info("Test execution time: {} seconds", executionTimeSeconds);
         return executionTimeSeconds;
-    };
+    }
 
 }
