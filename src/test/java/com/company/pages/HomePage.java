@@ -1,17 +1,18 @@
 package com.company.pages;
 
-import com.company.utilities.Configuration;
+import com.company.utils.Configuration;
+import com.company.utils.Constants;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 @Log4j2
 public class HomePage extends BasePage{
 
     protected String homeUrl;
+    private static final String HOME = "Home";
 
     @FindBy(xpath = "//a[contains(text(), 'Home')]\n")
     public WebElement homeText;
@@ -33,7 +34,7 @@ public class HomePage extends BasePage{
     }
 
     public void navigateToHomePage() {
-        homeUrl = Configuration.getInstance().getProperty("url");
+        homeUrl = Configuration.getInstance().getProperty(Constants.HOME_PAGE_URL);
         log.info("URL: {}", homeUrl);
         openUrl(homeUrl);
     }
@@ -42,7 +43,7 @@ public class HomePage extends BasePage{
         webDriverWait.until((d) -> homeText.isDisplayed());
         String home_Text = getHomeText();
         Assert.assertTrue(homeText.isDisplayed());
-        Assert.assertEquals(home_Text,"Home");
+        Assert.assertEquals(home_Text,HOME);
     }
 
 

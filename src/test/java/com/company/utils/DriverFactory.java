@@ -1,16 +1,26 @@
-package com.company.utilities;
+package com.company.utils;
 
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 @Log4j2
 public class DriverFactory {
+
+    public static Capabilities capabilities;
+    private static final String seleniumGridUrl = Configuration.getInstance().getProperty("seleniumGridUrl");
 
     private static final Supplier<WebDriver> chromeSupplier = ChromeDriver::new;
     private static final Supplier<WebDriver> firefoxSupplier = FirefoxDriver::new;
@@ -27,6 +37,15 @@ public class DriverFactory {
 
     public static WebDriver getDriver(String browser){
         return DRIVER_POOL.get(browser).get();
+    }
+
+    public static WebDriver getRemoteDriver(String browser) throws MalformedURLException {
+        if (browser.equals("chrome")) {
+            capabilities = new ChromeOptions();
+        } else if (browser.equals("firefox")) {
+            capabilities = new FirefoxOptions();
+        }
+        return new RemoteWebDriver(new URL(seleniumGridUrl), capabilities);
     }
 
 

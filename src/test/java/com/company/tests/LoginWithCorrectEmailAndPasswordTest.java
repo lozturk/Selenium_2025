@@ -1,8 +1,8 @@
 package com.company.tests;
 
 import com.company.pages.*;
+import com.company.utils.Constants;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.exec.util.StringUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -18,13 +18,12 @@ public class LoginWithCorrectEmailAndPasswordTest extends BaseTest {
 
     @DataProvider(name = "userData")
     public Object[][] getUserData() {
-        name = getPropertyValue(REGISTERED_USER_NAME);
-        email = getPropertyValue(REGISTERED_USER_EMAIL);
-        password = getPropertyValue(REGISTERED_USER_PASSWORD);
+        name = getPropertyValue(Constants.REGISTERED_USER_NAME);
+        email = getPropertyValue(Constants.REGISTERED_USER_EMAIL);
+        password = getPropertyValue(Constants.REGISTERED_USER_PASSWORD);
         return new Object[][]{{name,email,password}};
     }
-
-    @BeforeMethod
+  @BeforeMethod
     public void initiatePages(){
         log.info("Initiating Pages!...");
         homePage = new HomePage(driver);

@@ -1,4 +1,4 @@
-package com.company.utilities;
+package com.company.utils;
 
 import lombok.extern.log4j.Log4j2;
 import org.yaml.snakeyaml.Yaml;
@@ -11,7 +11,8 @@ import java.util.Map;
 public class Configuration {
 
     private static Map<String, String> props = null;
-    private static final String ROOT_KEY_ENV = (System.getProperty("test.environment") == null || System.getProperty("test.environment").isEmpty()) ? "dev" : System.getProperty("test.environment");
+    private static final String ROOT_KEY_ENV = (System.getProperty(Constants.TEST_ENVIRONMENT) == null ||
+            System.getProperty(Constants.TEST_ENVIRONMENT).isEmpty()) ? Constants.DEV : System.getProperty(Constants.TEST_ENVIRONMENT);
     private static Configuration instance = null;
 
     private Configuration() throws IOException {
@@ -36,7 +37,7 @@ public class Configuration {
     }
 
     public Map<String, Map<String, String>> loadConfig() {
-        InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream("config.yaml");
+        InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream(Constants.CONFIG_YAML);
         return new Yaml().load(inputStream);
 
     }

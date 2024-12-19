@@ -1,44 +1,47 @@
 package com.company.tests;
 
-import com.company.utilities.Configuration;
-import com.company.utilities.DriverFactory;
-import com.company.utilities.Utilities;
+import com.company.utils.Configuration;
+import com.company.utils.Constants;
+import com.company.utils.DriverFactory;
+import com.company.utils.Utilities;
 import com.github.javafaker.Faker;
 import io.qameta.allure.Allure;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.properties.PropertiesReader;
+import org.openqa.selenium.*;
+import com.company.utils.PropertiesReader;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import java.io.ByteArrayInputStream;
+import java.net.MalformedURLException;
 import java.time.Duration;
 
 @Log4j2
-public class BaseTest {
+public abstract class BaseTest {
 
+    private static final ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();
     protected WebDriver driver;
-    protected String browser, testName;
-    protected static String ENVIRONMENT,PATH_TO_PROPERTIES;
-    protected static final String NAME = "name";
-    protected static final String EMAIL = "email";
-    protected static final String REGISTERED_USER_NAME = "registered_user_name";
-    protected static final String REGISTERED_USER_EMAIL = "registered_user_email";
-    protected static final String REGISTERED_USER_PASSWORD = "registered_user_password";
+    protected String browser, grid, testName, name,email,password,month,year,firstName,lastName,company,
+            address,address2,country,state,city,zip,mobileNumber,product_1,product_2;
+    protected String ENVIRONMENT,PATH_TO_PROPERTIES;
     protected PropertiesReader propertyReader;
     protected Faker faker;
-    protected String name,email,password,month,year,firstName,lastName,company,address,address2,country,state,city,zip,mobileNumber,product_1,product_2;
     protected int day,selected_item_count;
+
+    public void setDriver(WebDriver driverInstance) {
+        threadDriver.set(driverInstance);
+    }
+    public static WebDriver getDriver() {
+        log.info("Thread name : {}", Thread.currentThread().getName());
+        log.info("Thread id : {}", Thread.currentThread().getId());
+        return threadDriver.get();
+    }
 
 
     @BeforeClass
     public void doBasics(){
-        ENVIRONMENT = System.getProperty("test.environment").toUpperCase();
-        log.info("ENVIRONMENT: {}", ENVIRONMENT);
+        ENVIRONMENT = System.getProperty(Constants.TEST_ENVIRONMENT).toUpperCase();
         PATH_TO_PROPERTIES = Utilities.getPathToDataProperties(ENVIRONMENT);
         propertyReader = new PropertiesReader(PATH_TO_PROPERTIES);
         faker = new Faker();
@@ -46,10 +49,17 @@ public class BaseTest {
 
 
     @BeforeMethod(alwaysRun = true)
-    public void setUp(ITestResult testResult){
-        browser = Configuration.getInstance().getProperty("browser");
-        log.info("Setting up the driver for browser: {}", browser);
-        driver = DriverFactory.getDriver(browser);
+    public void setUp(ITestResult testResult) throws MalformedURLException {
+        browser = Configuration.getInstance().getProperty(Constants.BROWSER);
+        grid = Configuration.getInstance().getProperty(Constants.GRID);
+        if (grid.contains(Constants.ENABLED)) {
+            log.info("Setting up the remote Webdriver for browser: {}", browser);
+            setDriver(DriverFactory.getRemoteDriver(browser));
+        } else {
+            log.info("Setting up the local Webdriver for browser: {}", browser);
+            setDriver(DriverFactory.getDriver(browser));
+        }
+        driver = getDriver();
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -86,7 +96,7 @@ public class BaseTest {
 
     protected String getPropertyValue(String key){
         if (propertyReader == null){
-            log.error("PropertyReader is not initialized");
+            log.error("PropertyReader is not initialized!");
             return null;
         }
         return propertyReader.getProperty(key);

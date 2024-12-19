@@ -17,8 +17,8 @@ import java.util.Objects;
 @Log4j2
 public abstract class BasePage {
 
-    protected WebDriver driver;
-    protected WebDriverWait webDriverWait;
+    protected final WebDriver driver;
+    protected final  WebDriverWait webDriverWait;
 
     @FindBy(xpath = "//button[text() = 'Continue Shopping']")
     protected WebElement continueShoppingButton;

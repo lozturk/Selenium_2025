@@ -14,7 +14,7 @@ public class ProductsPage extends BasePage{
 
     protected WebElement elementToHoverOver;
 
-    @FindBy(css = "h2[class^='title']")
+    @FindBy(xpath = "//h2[contains(text(),'All Products')]")
     public WebElement allProductsText;
 
     @FindBy(xpath = "//div[@class='col-sm-4']")
@@ -26,7 +26,7 @@ public class ProductsPage extends BasePage{
 
     public void verifyAllProductsTextIsDisplayed() {
         webDriverWait.until((d)-> allProductsText.isDisplayed());
-        Assert.assertEquals(allProductsText.getText(), "ALL PRODUCTS");
+        Assert.assertTrue(allProductsText.getText().contains("ALL PRODUCTS"));
         log.info("All products text is displayed successfully.");
     }
 

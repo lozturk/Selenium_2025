@@ -10,7 +10,8 @@ dev:
   pool: 5
   dbUsername:
   dbPassword:
-  grid: seleniumGrid
+  seleniumGridUrl: http://localhost:4444/wd/hub
+  grid: enabled
   browser: chrome
 test:
   url: https://automationexercise.com/
@@ -24,8 +25,9 @@ test:
   pool: 5
   dbUsername:
   dbPassword:
-  grid: seleniumGrid
-  browser: chrome
+  seleniumGridUrl: http://localhost:4444/wd/hub
+  grid: enabled
+  browser: firefox
 staging:
   url:
   username:
@@ -38,5 +40,6 @@ staging:
   pool: 5
   dbUsername:
   dbPassword:
-  grid: seleniumGrid
+  seleniumGridUrl: http://localhost:4444/wd/hub
+  grid: enabled
   browser: chrome
