@@ -75,6 +75,7 @@
                     </suiteXmlFiles>
                     <parallel>classes</parallel>
                     <threadCount>4</threadCount>
+                    <reportsDirectory>target/test-output</reportsDirectory>
                 </configuration>
             </plugin>
             <!-- Other plugins and configurations -->

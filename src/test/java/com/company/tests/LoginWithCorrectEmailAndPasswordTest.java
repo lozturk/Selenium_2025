@@ -24,18 +24,15 @@ public class LoginWithCorrectEmailAndPasswordTest extends BaseTest {
         password = getPropertyValue(Constants.REGISTERED_USER_PASSWORD);
         return new Object[][]{{name,email,password}};
     }
-  @BeforeMethod
-    public void initiatePages(){
+
+    @Test(dataProvider = "userData")
+    public void loginWithCorrectEmailAndPassword (String name,String email,String password){
         log.info("Initiating Pages!...");
         homePage = new HomePage(driver);
         loginPage = new LoginPage(driver);
         signUpPage = new SignUpPage(driver);
         accountCreatedPage = new AccountCreatedPage(driver);
         navigationBar = new NavigationBar(driver);
-    }
-
-    @Test(dataProvider = "userData")
-    public void loginWithCorrectEmailAndPassword (String name,String email,String password){
         homePage.navigateToHomePage();
         homePage.verifyHomeTextIsDisplayed();
         homePage.clickSignUpButton();

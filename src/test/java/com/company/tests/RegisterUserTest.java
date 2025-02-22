@@ -8,13 +8,6 @@ import org.testng.annotations.*;
 @Log4j2
 public class RegisterUserTest extends BaseTest {
 
-    protected HomePage homePage;
-    protected LoginPage loginPage;
-    protected SignUpPage signUpPage;
-    protected AccountCreatedPage accountCreatedPage;
-    protected NavigationBar navigationBar;
-    protected DeleteAccountPage deleteAccountPage;
-
     @DataProvider(name = "userData")
     public Object[][] getUserData() {
         log.info("Initiating DataProvider!...");
@@ -37,8 +30,17 @@ public class RegisterUserTest extends BaseTest {
         return new Object[][]{{name, email,password, day, month, year, firstName, lastName,company,address,address2,country,state,city,zip,mobileNumber}};
     }
 
-    @BeforeMethod
-    public void initiatePages(){
+    protected HomePage homePage;
+    protected LoginPage loginPage;
+    protected SignUpPage signUpPage;
+    protected AccountCreatedPage accountCreatedPage;
+    protected NavigationBar navigationBar;
+    protected DeleteAccountPage deleteAccountPage;
+
+    @Test(dataProvider = "userData")
+    public void registerUser (String name,String email,String password,int day,String month,String year,
+                              String firstName,String lastName,String company,String address,String address2,
+                              String country,String state,String city,String zip,String mobileNumber){
         log.info("Initiating Pages!...");
         homePage = new HomePage(driver);
         loginPage = new LoginPage(driver);
@@ -46,12 +48,6 @@ public class RegisterUserTest extends BaseTest {
         accountCreatedPage = new AccountCreatedPage(driver);
         navigationBar = new NavigationBar(driver);
         deleteAccountPage = new DeleteAccountPage(driver);
-    }
-
-    @Test(dataProvider = "userData")
-    public void registerUser (String name,String email,String password,int day,String month,String year,
-                              String firstName,String lastName,String company,String address,String address2,
-                              String country,String state,String city,String zip,String mobileNumber){
         homePage.navigateToHomePage();
         homePage.verifyHomeTextIsDisplayed();
         homePage.clickSignUpButton();

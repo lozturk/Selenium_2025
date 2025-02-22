@@ -22,6 +22,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Ignore;
+import org.testng.collections.CollectionUtils;
 
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
@@ -40,9 +41,6 @@ public abstract class BaseTest {
     protected int day,selected_item_count;
 
 
-
-
-    @Ignore
     @BeforeClass
     public void doBasics(){
         ENVIRONMENT = System.getProperty(Constants.TEST_ENVIRONMENT).toUpperCase();
@@ -52,14 +50,10 @@ public abstract class BaseTest {
     }
 
 
-    @BeforeTest
-    public void setUp(ITestContext testContext) throws MalformedURLException {
-        ENVIRONMENT = System.getProperty(Constants.TEST_ENVIRONMENT).toUpperCase();
-        PATH_TO_PROPERTIES = Utilities.getPathToDataProperties(ENVIRONMENT);
-        propertyReader = new PropertiesReader(PATH_TO_PROPERTIES);
-
+    @BeforeMethod
+    public void setUp(ITestResult iTestResult) throws MalformedURLException {
         browser = System.getProperty(Constants.BROWSER);
-        if (Boolean.getBoolean("selenium.gird.enabled")) {
+        if (Boolean.getBoolean("selenium.grid.enabled")) {
             log.info("Setting up the remote Webdriver for browser: {}", browser);
             driver = getRemoteDriver(browser);
         } else {
@@ -70,9 +64,8 @@ public abstract class BaseTest {
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        testName = testContext.getCurrentXmlTest().getName();
+        testName = iTestResult.getMethod().getMethodName();
         log.info("Starting test: {} in environment: {}", testName, ENVIRONMENT);
-        faker = new Faker();
     }
 
     private WebDriver getRemoteDriver(String browser) throws MalformedURLException {
@@ -84,29 +77,31 @@ public abstract class BaseTest {
     }
 
 
-    @AfterTest
-    public void tearDown(ITestResult testResult){
+    @AfterMethod
+    public void tearDown(ITestResult iTestResult){
 
         try {
 
-            if (testResult.getStatus() == ITestResult.FAILURE){
+            if (iTestResult.getStatus() == ITestResult.FAILURE){
                 Allure.addAttachment("Screenshot",new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
                 log.info("{} failed...", testName);
             }
 
-            if (testResult.getStatus() == ITestResult.SUCCESS) {
+            if (iTestResult.getStatus() == ITestResult.SUCCESS) {
                 log.info("{} passed successfully...", testName);
             }
-
-            if (driver != null)
+            if (driver != null){
                 driver.quit();
+                log.info("Closed the driver gracefully....");
+            }
+
 
         } catch (Exception e) {
             log.error(e.getMessage());
         }  finally {
             log.info("Running finally...");
-            if ((driver != null && testResult.getStatus() == ITestResult.FAILURE )
-                    || (driver != null && getTestExecutionTime(testResult) >= 90))
+            if ((driver != null && iTestResult.getStatus() == ITestResult.FAILURE )
+                    || (driver != null && getTestExecutionTime(iTestResult) >= 90))
                 driver.quit();
         }
     }
