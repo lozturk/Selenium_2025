@@ -66,12 +66,15 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <forkCount>2</forkCount>
-                    <parallel>classes</parallel>
-                    <threadCount>4</threadCount>
+                    <systemPropertyVariables>
+                        <browser>chrome</browser>
+                        <selenium.grid.enabled>true</selenium.grid.enabled>
+                    </systemPropertyVariables>
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/suites/login.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <parallel>classes</parallel>
+                    <threadCount>4</threadCount>
                 </configuration>
             </plugin>
             <!-- Other plugins and configurations -->

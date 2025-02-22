@@ -7,12 +7,22 @@ import com.company.utils.Utilities;
 import com.github.javafaker.Faker;
 import io.qameta.allure.Allure;
 import lombok.extern.log4j.Log4j2;
+
+import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeOptions;
+
 import com.company.utils.PropertiesReader;
+
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Ignore;
+
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -20,25 +30,19 @@ import java.time.Duration;
 @Log4j2
 public abstract class BaseTest {
 
-    private static final ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();
+    
     protected WebDriver driver;
-    protected String browser, grid, testName, name,email,password,month,year,firstName,lastName,company,
+    protected String browser,testName, name,email,password,month,year,firstName,lastName,company,
             address,address2,country,state,city,zip,mobileNumber,product_1,product_2;
     protected String ENVIRONMENT,PATH_TO_PROPERTIES;
     protected PropertiesReader propertyReader;
     protected Faker faker;
     protected int day,selected_item_count;
 
-    public void setDriver(WebDriver driverInstance) {
-        threadDriver.set(driverInstance);
-    }
-    public static WebDriver getDriver() {
-        log.info("Thread name : {}", Thread.currentThread().getName());
-        log.info("Thread id : {}", Thread.currentThread().getId());
-        return threadDriver.get();
-    }
 
 
+
+    @Ignore
     @BeforeClass
     public void doBasics(){
         ENVIRONMENT = System.getProperty(Constants.TEST_ENVIRONMENT).toUpperCase();
@@ -48,26 +52,39 @@ public abstract class BaseTest {
     }
 
 
-    @BeforeMethod(alwaysRun = true)
-    public void setUp(ITestResult testResult) throws MalformedURLException {
-        browser = Configuration.getInstance().getProperty(Constants.BROWSER);
-        grid = Configuration.getInstance().getProperty(Constants.GRID);
-        if (grid.contains(Constants.ENABLED)) {
+    @BeforeTest
+    public void setUp(ITestContext testContext) throws MalformedURLException {
+        ENVIRONMENT = System.getProperty(Constants.TEST_ENVIRONMENT).toUpperCase();
+        PATH_TO_PROPERTIES = Utilities.getPathToDataProperties(ENVIRONMENT);
+        propertyReader = new PropertiesReader(PATH_TO_PROPERTIES);
+
+        browser = System.getProperty(Constants.BROWSER);
+        if (Boolean.getBoolean("selenium.gird.enabled")) {
             log.info("Setting up the remote Webdriver for browser: {}", browser);
-            setDriver(DriverFactory.getRemoteDriver(browser));
+            driver = getRemoteDriver(browser);
         } else {
             log.info("Setting up the local Webdriver for browser: {}", browser);
-            setDriver(DriverFactory.getDriver(browser));
+            driver = getLocalDriver();
         }
-        driver = getDriver();
+
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        testName = testResult.getMethod().getMethodName();
+        testName = testContext.getCurrentXmlTest().getName();
         log.info("Starting test: {} in environment: {}", testName, ENVIRONMENT);
+        faker = new Faker();
     }
 
-    @AfterMethod(alwaysRun = true)
+    private WebDriver getRemoteDriver(String browser) throws MalformedURLException {
+        return DriverFactory.getRemoteDriver(browser);
+    }
+
+    private WebDriver getLocalDriver() {
+        return DriverFactory.getDriver(browser);
+    }
+
+
+    @AfterTest
     public void tearDown(ITestResult testResult){
 
         try {
@@ -93,6 +110,9 @@ public abstract class BaseTest {
                 driver.quit();
         }
     }
+
+
+
 
     protected String getPropertyValue(String key){
         if (propertyReader == null){

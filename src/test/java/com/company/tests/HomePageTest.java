@@ -12,14 +12,10 @@ public class HomePageTest extends BaseTest {
     protected HomePage homePage;
     protected NavigationBar navigationBar;
 
-    @BeforeMethod
-    public void initiatePages(){
-        homePage = new HomePage(driver);
-        navigationBar = new NavigationBar(driver);
-    }
-
     @Test
     public void verifyHomePageTest(){
+        homePage = new HomePage(driver);
+        navigationBar = new NavigationBar(driver);
         homePage.navigateToHomePage();
         homePage.verifyHomeTextIsDisplayed();
         navigationBar.clickOnHomeButton();
