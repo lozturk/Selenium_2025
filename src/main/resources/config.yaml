@@ -1,39 +1,33 @@
 dev:
-  url: https://automationexercise.com/
-  username:
-  password:
-  baseURI:
-  service_username:
-  service_password:
+  applicationUrl: https://automationexercise.com/
   database:
   dbService:
   pool: 5
   dbUsername:
   dbPassword:
-  seleniumGridUrl: http://localhost:4444/wd/hub
+  browser: chrome
+  selenium.grid.enabled: false
+  selenium.grid.urlFormat: http://%s:4444/wd/hub
+  selenium.grid.hubHost: localhost
 test:
-  url: https://automationexercise.com/
-  username:
-  password:
-  baseURI:
-  service_username:
-  service_password:
+  applicationUrl: https://automationexercise.com/
   database:
   dbService:
   pool: 5
   dbUsername:
   dbPassword:
-  seleniumGridUrl: http://localhost:4444/wd/hub
+  browser: chrome
+  selenium.grid.enabled: false
+  selenium.grid.urlFormat: http://%s:4444/wd/hub
+  selenium.grid.hubHost: localhost
 staging:
-  url:
-  username:
-  password:
-  baseURI:
-  service_username:
-  service_password:
+  applicationUrl: https://automationexercise.com/
   database:
   dbService:
   pool: 5
   dbUsername:
   dbPassword:
-  seleniumGridUrl: http://localhost:4444/wd/hub
+  browser: chrome
+  selenium.grid.enabled: false
+  selenium.grid.urlFormat: http://%s:4444/wd/hub
+  selenium.grid.hubHost: localhost

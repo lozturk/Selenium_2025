@@ -8,23 +8,37 @@ import java.io.InputStream;
 import java.util.Map;
 
 @Log4j2
-public class Configuration {
+public class Config {
 
     private static Map<String, String> props = null;
     private static final String ROOT_KEY_ENV = (System.getProperty(Constants.TEST_ENVIRONMENT) == null ||
             System.getProperty(Constants.TEST_ENVIRONMENT).isEmpty()) ? Constants.DEV : System.getProperty(Constants.TEST_ENVIRONMENT);
-    private static Configuration instance = null;
+    private static Config instance = null;
 
-    private Configuration() throws IOException {
-        synchronized (Configuration.class) {
+    private Config() throws IOException {
+        synchronized (Config.class) {
             props = loadConfig().get(ROOT_KEY_ENV);
+
+            // Check for any override
+            for (Map.Entry<String, String> entry : props.entrySet()) {
+                if (System.getProperties().containsKey(entry.getKey())) {
+                    props.put(entry.getKey(), System.getProperty(entry.getKey()));
+                }
+            }
+
+            // Print config data
+            log.info("------------------------");
+            for (Map.Entry<String, String> entry : props.entrySet()) {
+                log.info("{}: {}", entry.getKey(), entry.getValue());
+            }
+            log.info("------------------------");
         }
     }
 
-    public static Configuration getInstance() {
+    public static Config getInstance() {
         if (instance == null) {
             try {
-                instance = new Configuration();
+                instance = new Config();
             } catch (IOException e) {
                 log.error(e.getMessage());
             }
@@ -37,8 +51,7 @@ public class Configuration {
     }
 
     public Map<String, Map<String, String>> loadConfig() {
-        InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream(Constants.CONFIG_YAML);
+        InputStream inputStream = Config.class.getClassLoader().getResourceAsStream(Constants.CONFIG_YAML);
         return new Yaml().load(inputStream);
-
     }
 }

@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -20,7 +21,6 @@ import java.util.function.Supplier;
 public class DriverFactory {
 
     public static Capabilities capabilities;
-    private static final String seleniumGridUrl = Configuration.getInstance().getProperty("seleniumGridUrl");
 
     private static final Supplier<WebDriver> chromeSupplier = ChromeDriver::new;
     private static final Supplier<WebDriver> firefoxSupplier = FirefoxDriver::new;
@@ -30,21 +30,35 @@ public class DriverFactory {
     private static final Map<String, Supplier<WebDriver> > DRIVER_POOL = new HashMap<>();
 
     static {
-        DRIVER_POOL.put("chrome",chromeSupplier);
-        DRIVER_POOL.put("firefox",firefoxSupplier);
-        DRIVER_POOL.put("edge",edgeSupplier);
+        DRIVER_POOL.put(Constants.CHROME,chromeSupplier);
+        DRIVER_POOL.put(Constants.FIREFOX,firefoxSupplier);
+        DRIVER_POOL.put(Constants.EDGE,edgeSupplier);
     }
 
-    public static WebDriver getDriver(String browser){
+    public static WebDriver getLocalDriver(String browser){
+        log.info("Setting up the local Webdriver for browser: {}", browser);
         return DRIVER_POOL.get(browser).get();
     }
 
     public static WebDriver getRemoteDriver(String browser) throws MalformedURLException {
-        if (browser.equals("chrome")) {
-            capabilities = new ChromeOptions();
-        } else if (browser.equals("firefox")) {
-            capabilities = new FirefoxOptions();
+        log.info("Setting up the remote Webdriver for browser: {}", browser);
+        switch(browser) {
+            case Constants.CHROME:
+                capabilities = new ChromeOptions();
+                break;
+            case Constants.FIREFOX:
+                capabilities = new FirefoxOptions();
+                break;
+            case Constants.EDGE:
+                capabilities = new EdgeOptions();
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported browser: " + browser);
         }
+        String urlFormat = Config.getInstance().getProperty(Constants.GRID_URL_FORMAT);
+        String hubHost = Config.getInstance().getProperty(Constants.GRID_HUB_HOST);
+        String seleniumGridUrl = String.format(urlFormat, hubHost);
+        log.info( "selenium grid url : {} ", seleniumGridUrl);
         return new RemoteWebDriver(new URL(seleniumGridUrl), capabilities);
     }
 

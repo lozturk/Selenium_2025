@@ -37,7 +37,7 @@ public class ViewCartPage extends BasePage {
     }
 
     public void validateItemCountInCart(int count) {
-        item_count = getTableBodyRows().size();
+        item_count = getTableBodyRows().size() - 1;
         Assert.assertEquals(item_count, count);
         log.info("item count : {} validated successfully ", item_count);
     }

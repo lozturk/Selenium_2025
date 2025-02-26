@@ -1,6 +1,6 @@
 package com.company.pages;
 
-import com.company.utils.Configuration;
+import com.company.utils.Config;
 import com.company.utils.Constants;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
@@ -34,7 +34,7 @@ public class HomePage extends BasePage{
     }
 
     public void navigateToHomePage() {
-        homeUrl = Configuration.getInstance().getProperty(Constants.HOME_PAGE_URL);
+        homeUrl = Config.getInstance().getProperty(Constants.HOME_PAGE_URL);
         log.info("URL: {}", homeUrl);
         openUrl(homeUrl);
     }

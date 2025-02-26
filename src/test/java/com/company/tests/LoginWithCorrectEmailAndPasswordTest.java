@@ -27,7 +27,6 @@ public class LoginWithCorrectEmailAndPasswordTest extends BaseTest {
 
     @Test(dataProvider = "userData")
     public void loginWithCorrectEmailAndPassword (String name,String email,String password){
-        log.info("Initiating Pages!...");
         homePage = new HomePage(driver);
         loginPage = new LoginPage(driver);
         signUpPage = new SignUpPage(driver);

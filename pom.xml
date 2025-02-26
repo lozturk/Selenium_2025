@@ -12,6 +12,14 @@
         <maven.compiler.source>13</maven.compiler.source>
         <maven.compiler.target>13</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- plugins versions -->
+        <maven.compiler.version>3.11.0</maven.compiler.version>
+        <maven.dependency.version>3.6.0</maven.dependency.version>
+        <maven.jar.version>3.3.0</maven.jar.version>
+        <maven.surefire.version>3.2.5</maven.surefire.version>
+        <maven.resources.plugin>3.3.1</maven.resources.plugin>
+        <!-- output directory -->
+        <package.directory>${project.build.directory}/docker-resources</package.directory>
     </properties>
 
     <dependencies>
@@ -64,21 +72,81 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
+                <version>${maven.surefire.version}</version>
                 <configuration>
                     <systemPropertyVariables>
                         <browser>chrome</browser>
                         <selenium.grid.enabled>true</selenium.grid.enabled>
+                        <test.environment>dev</test.environment>
                     </systemPropertyVariables>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/suites/login.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/suites/login_tests.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/suites/product_tests.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <parallel>classes</parallel>
+                    <threadCountSuites>2</threadCountSuites>
                     <threadCount>4</threadCount>
                     <reportsDirectory>target/test-output</reportsDirectory>
                 </configuration>
             </plugin>
-            <!-- Other plugins and configurations -->
+            <!-- To copy all the dependencies to run our tests as part of "mvn package" -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven.dependency.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${package.directory}/libs
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- To package our page objects, test classes into jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.version}</version>
+                <configuration>
+                    <outputDirectory>${package.directory}</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- To copy resources into the output directory -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.plugin}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${package.directory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/test/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

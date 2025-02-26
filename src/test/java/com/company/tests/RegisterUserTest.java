@@ -41,7 +41,6 @@ public class RegisterUserTest extends BaseTest {
     public void registerUser (String name,String email,String password,int day,String month,String year,
                               String firstName,String lastName,String company,String address,String address2,
                               String country,String state,String city,String zip,String mobileNumber){
-        log.info("Initiating Pages!...");
         homePage = new HomePage(driver);
         loginPage = new LoginPage(driver);
         signUpPage = new SignUpPage(driver);

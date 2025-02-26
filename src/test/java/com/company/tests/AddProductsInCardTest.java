@@ -26,7 +26,6 @@ public class AddProductsInCardTest extends BaseTest{
 
     @Test (dataProvider = "productData")
     public void testAddProductsInCart(String product_1,String product_2,int selectedItemCount) throws InterruptedException {
-        log.info("Initiating Pages!...");
         homePage = new HomePage(driver);
         navigationBar = new NavigationBar(driver);
         productsPage = new ProductsPage(driver);

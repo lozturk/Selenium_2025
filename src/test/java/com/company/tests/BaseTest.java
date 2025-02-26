@@ -1,41 +1,32 @@
 package com.company.tests;
 
-import com.company.utils.Configuration;
-import com.company.utils.Constants;
-import com.company.utils.DriverFactory;
-import com.company.utils.Utilities;
+import com.company.utils.*;
 import com.github.javafaker.Faker;
 import io.qameta.allure.Allure;
 import lombok.extern.log4j.Log4j2;
 
-import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeOptions;
-
-import com.company.utils.PropertiesReader;
 
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Ignore;
-import org.testng.collections.CollectionUtils;
+import org.testng.annotations.Listeners;
 
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.time.Duration;
 
 @Log4j2
+@Listeners({TestListener.class})
 public abstract class BaseTest {
 
     
     protected WebDriver driver;
     protected String browser,testName, name,email,password,month,year,firstName,lastName,company,
             address,address2,country,state,city,zip,mobileNumber,product_1,product_2;
-    protected String ENVIRONMENT,PATH_TO_PROPERTIES;
+    protected String environment, pathToProperties;
     protected PropertiesReader propertyReader;
     protected Faker faker;
     protected int day,selected_item_count;
@@ -43,37 +34,32 @@ public abstract class BaseTest {
 
     @BeforeClass
     public void doBasics(){
-        ENVIRONMENT = System.getProperty(Constants.TEST_ENVIRONMENT).toUpperCase();
-        PATH_TO_PROPERTIES = Utilities.getPathToDataProperties(ENVIRONMENT);
-        propertyReader = new PropertiesReader(PATH_TO_PROPERTIES);
+        environment = System.getProperty(Constants.TEST_ENVIRONMENT).toUpperCase();
+        pathToProperties = Utilities.getPathToDataProperties(environment);
+        propertyReader = new PropertiesReader(pathToProperties);
         faker = new Faker();
+
     }
 
 
     @BeforeMethod
-    public void setUp(ITestResult iTestResult) throws MalformedURLException {
+    public void setUp(ITestResult iTestResult, ITestContext iTestContext) throws MalformedURLException {
         browser = System.getProperty(Constants.BROWSER);
-        if (Boolean.getBoolean("selenium.grid.enabled")) {
-            log.info("Setting up the remote Webdriver for browser: {}", browser);
-            driver = getRemoteDriver(browser);
-        } else {
-            log.info("Setting up the local Webdriver for browser: {}", browser);
-            driver = getLocalDriver();
-        }
-
+        driver = Boolean.parseBoolean(Config.getInstance().getProperty(Constants.GRID_ENABLED)) ? getRemoteDriver(browser) : getLocalDriver(browser);
+        iTestContext.setAttribute(Constants.DRIVER, driver);
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         testName = iTestResult.getMethod().getMethodName();
-        log.info("Starting test: {} in environment: {}", testName, ENVIRONMENT);
+        log.info("Starting test: {} in environment: {}", testName, environment);
     }
 
     private WebDriver getRemoteDriver(String browser) throws MalformedURLException {
         return DriverFactory.getRemoteDriver(browser);
     }
 
-    private WebDriver getLocalDriver() {
-        return DriverFactory.getDriver(browser);
+    private WebDriver getLocalDriver(String browser) {
+        return DriverFactory.getLocalDriver(browser);
     }
 
 
