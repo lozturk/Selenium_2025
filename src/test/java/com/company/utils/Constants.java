@@ -3,7 +3,7 @@ package com.company.utils;
 public class Constants {
 
     public static final String HOME_PAGE_URL = "applicationUrl";
-    public static final String CONFIG_YAML = "config.yaml";
+    public static final String CONFIG_YAML = "config/config.yaml";
     public static final String BROWSER = "browser";
     public static final String CHROME = "chrome";
     public static final String FIREFOX = "firefox";

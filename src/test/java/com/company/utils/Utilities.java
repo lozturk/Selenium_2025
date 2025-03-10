@@ -7,9 +7,9 @@ import lombok.extern.log4j.Log4j2;
 public class Utilities {
 
 
-    protected static final String PATH_TO_DEV_DATA_PROPERTIES = "properties/dev_data.properties";
-    protected static final String PATH_TO_TEST_DATA_PROPERTIES = "properties/test_data.properties";
-    protected static final String PATH_TO_STAGE_DATA_PROPERTIES = "properties/stage_data.properties";
+    protected static final String PATH_TO_DEV_DATA_PROPERTIES = "test-data/dev_data.properties";
+    protected static final String PATH_TO_TEST_DATA_PROPERTIES = "test-data/test_data.properties";
+    protected static final String PATH_TO_STAGE_DATA_PROPERTIES = "test-data/stage_data.properties";
     protected static String pathToDataProperties;
 
     public static String getPathToDataProperties(String environment) {
