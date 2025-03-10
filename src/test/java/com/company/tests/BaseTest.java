@@ -9,10 +9,7 @@ import org.openqa.selenium.*;
 
 import org.testng.ITestContext;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.*;
 
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
@@ -30,7 +27,12 @@ public abstract class BaseTest {
     protected PropertiesReader propertyReader;
     protected Faker faker;
     protected int day,selected_item_count;
+    protected static Config config;
 
+    @BeforeSuite
+    public static void setup() {
+        config = Config.getInstance(); // Load and log config once before all tests
+    }
 
     @BeforeClass
     public void doBasics(){
@@ -38,14 +40,13 @@ public abstract class BaseTest {
         pathToProperties = Utilities.getPathToDataProperties(environment);
         propertyReader = new PropertiesReader(pathToProperties);
         faker = new Faker();
-
     }
 
 
     @BeforeMethod
     public void setUp(ITestResult iTestResult, ITestContext iTestContext) throws MalformedURLException {
         browser = System.getProperty(Constants.BROWSER);
-        driver = Boolean.parseBoolean(Config.getInstance().getProperty(Constants.GRID_ENABLED)) ? getRemoteDriver(browser) : getLocalDriver(browser);
+        driver = Boolean.parseBoolean(config.getProperty(Constants.GRID_ENABLED)) ? getRemoteDriver(browser) : getLocalDriver(browser);
         iTestContext.setAttribute(Constants.DRIVER, driver);
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
