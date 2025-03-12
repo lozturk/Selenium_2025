@@ -1,9 +1,9 @@
-package com.company.tests;
+package com.company.tests.login;
 
 import com.company.pages.*;
+import com.company.tests.BaseTest;
 import com.company.utils.Constants;
 import lombok.extern.log4j.Log4j2;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

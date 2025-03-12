@@ -6,6 +6,7 @@ public class Constants {
     public static final String CONFIG_YAML = "config/config.yaml";
     public static final String BROWSER = "browser";
     public static final String CHROME = "chrome";
+    public static final String CHROME_HEADLESS = "chrome-headless";
     public static final String FIREFOX = "firefox";
     public static final String EDGE = "edge";
     public static final String GRID_ENABLED = "selenium.grid.enabled";
@@ -21,4 +22,8 @@ public class Constants {
     public static final String USERNAME = "username";
     public static final String EMAIL = "email";
     public static final String DRIVER = "driver";
+
+    public static final String PATH_TO_DEV_DATA_PROPERTIES = "test-data/dev_data.properties";
+    public static final String PATH_TO_TEST_DATA_PROPERTIES = "test-data/test_data.properties";
+    public static final String PATH_TO_STAGE_DATA_PROPERTIES = "test-data/stage_data.properties";
 }

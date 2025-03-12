@@ -5,6 +5,7 @@ dev:
   pool: 5
   dbUsername:
   dbPassword:
+  test.environment: prod
   browser: chrome
   selenium.grid.enabled: false
   selenium.grid.urlFormat: http://%s:4444/wd/hub
@@ -16,6 +17,7 @@ test:
   pool: 5
   dbUsername:
   dbPassword:
+  test.environment: prod
   browser: chrome
   selenium.grid.enabled: false
   selenium.grid.urlFormat: http://%s:4444/wd/hub
@@ -27,6 +29,7 @@ staging:
   pool: 5
   dbUsername:
   dbPassword:
+  test.environment: prod
   browser: chrome
   selenium.grid.enabled: false
   selenium.grid.urlFormat: http://%s:4444/wd/hub

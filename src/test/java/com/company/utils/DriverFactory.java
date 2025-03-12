@@ -21,18 +21,30 @@ import java.util.function.Supplier;
 public class DriverFactory {
 
     public static Capabilities capabilities;
+    public static ChromeOptions chromeOptions;
 
     private static final Supplier<WebDriver> chromeSupplier = ChromeDriver::new;
     private static final Supplier<WebDriver> firefoxSupplier = FirefoxDriver::new;
     private static final Supplier<WebDriver> edgeSupplier = EdgeDriver::new;
+    private static final Supplier<WebDriver> chromeHeadlessSupplier = () -> {
+        chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless"); // Run Chrome in headless mode
+        chromeOptions.addArguments("--disable-gpu"); // Disable GPU rendering
+        chromeOptions.addArguments("--window-size=1920,1080"); // Set a window size
+        chromeOptions.addArguments("--disable-dev-shm-usage"); // Overcome resource constraints
+
+        return new ChromeDriver(chromeOptions);
+    };
 
 
     private static final Map<String, Supplier<WebDriver> > DRIVER_POOL = new HashMap<>();
 
     static {
         DRIVER_POOL.put(Constants.CHROME,chromeSupplier);
+        DRIVER_POOL.put(Constants.CHROME_HEADLESS,chromeHeadlessSupplier);
         DRIVER_POOL.put(Constants.FIREFOX,firefoxSupplier);
         DRIVER_POOL.put(Constants.EDGE,edgeSupplier);
+
     }
 
     public static WebDriver getLocalDriver(String browser){
@@ -45,6 +57,14 @@ public class DriverFactory {
         switch(browser) {
             case Constants.CHROME:
                 capabilities = new ChromeOptions();
+                break;
+            case Constants.CHROME_HEADLESS:
+                log.info("Chrome options are already set for chrome-headless browser.");
+                chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--headless"); // Run Chrome in headless mode
+                chromeOptions.addArguments("--disable-gpu"); // Disable GPU rendering
+                chromeOptions.addArguments("--window-size=1920,1080"); // Set a window size
+                chromeOptions.addArguments("--disable-dev-shm-usage"); // Overcome resource constraints
                 break;
             case Constants.FIREFOX:
                 capabilities = new FirefoxOptions();
@@ -59,8 +79,15 @@ public class DriverFactory {
         String hubHost = Config.getInstance().getProperty(Constants.GRID_HUB_HOST);
         String seleniumGridUrl = String.format(urlFormat, hubHost);
         log.info( "selenium grid url : {} ", seleniumGridUrl);
-        return new RemoteWebDriver(new URL(seleniumGridUrl), capabilities);
+        if (browser.equalsIgnoreCase(Constants.CHROME_HEADLESS)) {
+            return new RemoteWebDriver(new URL(seleniumGridUrl), chromeOptions);
+        } else {
+            return new RemoteWebDriver(new URL(seleniumGridUrl), capabilities);
+        }
+
     }
+
+
 
 
 

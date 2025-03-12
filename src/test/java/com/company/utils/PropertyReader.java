@@ -7,26 +7,28 @@ import java.io.InputStream;
 import java.util.Properties;
 
 @Log4j2
-public class PropertiesReader {
+public class PropertyReader {
 
     public Properties properties;
 
-    public PropertiesReader(String fileName) {
+    public PropertyReader(String fileName) {
         properties = new Properties();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream(fileName)) {
+        log.info("Reading properties from file {}", fileName);
+        try (InputStream input = PropertyReader.class.getClassLoader().getResourceAsStream(fileName)) {
             if (input == null) {
                 System.out.println("Sorry, unable to find " + fileName);
                 return;
             }
             properties.load(input);
+            log.info("Successfully loaded property file: {}", fileName);
         } catch (IOException ex) {
-            log.error(ex.getMessage());
+            log.error("Error occurred while loading property file: {}", fileName, ex);
         }
     }
 
     public String getProperty(String key) {
         String value = properties.getProperty(key);
-        log.debug("Requested property key: {}, value: {}", key, value);
+        log.info("Requested property key: {}, value: {}", key, value);
         return value;
     }
 }

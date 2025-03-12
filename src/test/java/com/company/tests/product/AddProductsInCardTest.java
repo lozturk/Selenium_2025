@@ -1,13 +1,13 @@
-package com.company.tests;
+package com.company.tests.product;
 
 import com.company.pages.*;
+import com.company.tests.BaseTest;
 import lombok.extern.log4j.Log4j2;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @Log4j2
-public class AddProductsInCardTest extends BaseTest{
+public class AddProductsInCardTest extends BaseTest {
 
     protected HomePage homePage;
     protected NavigationBar navigationBar;
