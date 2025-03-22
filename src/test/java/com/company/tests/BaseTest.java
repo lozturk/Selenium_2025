@@ -19,17 +19,17 @@ import java.time.Duration;
 @Listeners({TestListener.class})
 public abstract class BaseTest {
 
-    
     protected WebDriver driver;
-    protected String browser,testName, name,email,password,month,year,firstName,lastName,company,
-            address,address2,country,state,city,zip,mobileNumber,product_1,product_2;
+    protected String browser, testName, name, email, password, month, year, firstName, lastName, company,
+            address, address2, country, state, city, zip, mobileNumber, product_1, product_2;
     protected String environment, pathToProperties;
     protected PropertyReader propertyReader;
     protected Faker faker;
-    protected int day,selected_item_count;
+    protected int day, selected_item_count;
 
-    @BeforeTest (alwaysRun = true)
+    @BeforeTest(alwaysRun = true)
     public void setUp(ITestContext iTestContext) throws MalformedURLException {
+        faker = new Faker();
         environment = System.getProperty(Constants.TEST_ENVIRONMENT).trim();
         log.info("Environment : {}", environment);
         pathToProperties = Utilities.getPathToDataProperties(environment);
@@ -40,7 +40,7 @@ public abstract class BaseTest {
         iTestContext.setAttribute(Constants.DRIVER, driver);
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Constants.DEFAULT_IMPLICIT_WAIT));
         testName = iTestContext.getCurrentXmlTest().getName();
         log.info("Starting test: {} in environment: {}", testName, environment);
     }
@@ -53,32 +53,31 @@ public abstract class BaseTest {
         return DriverFactory.getLocalDriver(browser);
     }
 
-    @AfterTest  (alwaysRun = true)
+    @AfterTest(alwaysRun = true)
     public void tearDown() {
         try {
             ITestResult result = Utilities.getTestResult();
-            if (result != null) {
-                if (result.getStatus() == ITestResult.FAILURE) {
-                    Allure.addAttachment("Screenshot", new ByteArrayInputStream(
-                            ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
-                    log.info("Screenshot taken for Allure report.");
-                }
+            if (result != null && result.getStatus() == ITestResult.FAILURE) {
+                Allure.addAttachment(Constants.SCREENSHOT, new ByteArrayInputStream(
+                        ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+                log.info("Screenshot taken for Allure report.");
             }
-            if (driver != null){
+            if (driver != null) {
                 driver.quit();
-                log.info("Closed the driver gracefully....");
+                log.info(Constants.DRIVER_QUIT_MESSAGE);
             }
+        } catch (WebDriverException e) {
+            log.error("WebDriverException: {}", e.getMessage());
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Exception: {}", e.getMessage());
         }
     }
 
-    protected String getPropertyValue(String key){
-        if (propertyReader == null){
+    protected String getPropertyValue(String key) {
+        if (propertyReader == null) {
             log.error("PropertyReader is not initialized!");
-            return null;
+            throw new IllegalStateException("PropertyReader is not initialized!");
         }
         return propertyReader.getProperty(key);
     }
-
 }

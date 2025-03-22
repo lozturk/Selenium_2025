@@ -26,4 +26,9 @@ public class Constants {
     public static final String PATH_TO_DEV_DATA_PROPERTIES = "test-data/dev_data.properties";
     public static final String PATH_TO_TEST_DATA_PROPERTIES = "test-data/test_data.properties";
     public static final String PATH_TO_STAGE_DATA_PROPERTIES = "test-data/stage_data.properties";
+
+    public static final String SCREENSHOT = "Screenshot";
+    public static final String DRIVER_QUIT_MESSAGE = "Quit the driver gracefully....";
+    public static final int DEFAULT_IMPLICIT_WAIT = 10;
+
 }

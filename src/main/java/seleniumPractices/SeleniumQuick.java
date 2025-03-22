@@ -7,13 +7,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.Ignore;
+
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.time.Duration;
 
-@Ignore
 public class SeleniumQuick {
 
     public static void main (String[]args){

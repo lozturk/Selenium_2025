@@ -43,6 +43,7 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestSkipped(ITestResult result) {
         Utilities.setTestResult(result);
+        log.info("{} : skipped...", result.getName());
     }
 
     @Override

@@ -37,3 +37,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Allure ###
+allure-results/
+allure-results/*.json
+
+# Ignore the javaPractices directory
+src/main/java/javaPractices/
