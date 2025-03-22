@@ -37,6 +37,11 @@ public class LoginPage extends BasePage {
     @FindBy(xpath = "//button[contains(text(),'Login')]")
     public WebElement logInButton;
 
+    @FindBy(xpath = "   //*[@id=\"form\"]/div/div/div[1]/div/form/p")
+    public WebElement inValidEmailAndPasswordText;
+    
+
+
 
     public void verifySignUpIsDisplayed(){
         webDriverWait.until((d) -> newUserSignUpText.isDisplayed());
@@ -71,4 +76,10 @@ public class LoginPage extends BasePage {
     }
 
 
+
+    public void verifyLoginFailed() {
+        webDriverWait.until((d) -> inValidEmailAndPasswordText.isDisplayed());
+        log.debug(inValidEmailAndPasswordText.getText());
+        Assert.assertEquals(inValidEmailAndPasswordText.getText().trim(), "Your email or password is incorrect!");
+    }
 }

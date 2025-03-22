@@ -31,4 +31,7 @@ public class Constants {
     public static final String DRIVER_QUIT_MESSAGE = "Quit the driver gracefully....";
     public static final int DEFAULT_IMPLICIT_WAIT = 10;
 
+    public static final String INVALID_USER_EMAIL = "invalid_user_email";
+    public static final String INVALID_USER_PASSWORD = "invalid_user_password";
+
 }
