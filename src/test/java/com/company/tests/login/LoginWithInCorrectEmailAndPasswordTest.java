@@ -17,8 +17,8 @@ public class LoginWithInCorrectEmailAndPasswordTest extends BaseTest {
     @DataProvider(name = "invalidUserData")
     public Object[][] getInvalidUserData() {
         log.info("Initiating DataProvider with invalid credentials!...");
-        String invalidEmail = getPropertyValue(Constants.INVALID_USER_EMAIL);
-        String invalidPassword = getPropertyValue(Constants.INVALID_USER_PASSWORD);
+        invalidEmail = getPropertyValue(Constants.INVALID_USER_EMAIL);
+        invalidPassword = getPropertyValue(Constants.INVALID_USER_PASSWORD);
         return new Object[][]{{invalidEmail, invalidPassword}};
     }
 
@@ -36,4 +36,7 @@ public class LoginWithInCorrectEmailAndPasswordTest extends BaseTest {
         loginPage.logIn(email, password);
         loginPage.verifyLoginFailed();
     }
+
+
+
 }

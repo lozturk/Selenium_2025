@@ -21,7 +21,7 @@ public abstract class BaseTest {
 
     protected WebDriver driver;
     protected String browser, testName, name, email, password, month, year, firstName, lastName, company,
-            address, address2, country, state, city, zip, mobileNumber, product_1, product_2;
+            address, address2, country, state, city, zip, mobileNumber, product_1, product_2, invalidEmail, invalidPassword;
     protected String environment, pathToProperties;
     protected PropertyReader propertyReader;
     protected Faker faker;
