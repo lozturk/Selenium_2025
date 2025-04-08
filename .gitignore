@@ -44,3 +44,4 @@ allure-results/*.json
 
 # Ignore the javaPractices directory
 src/main/java/javaPractices/
+src/main/java/seleniumPractices
