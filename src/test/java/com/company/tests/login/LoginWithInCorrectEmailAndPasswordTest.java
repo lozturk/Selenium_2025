@@ -1,6 +1,8 @@
 package com.company.tests.login;
 
-import com.company.pages.*;
+import com.company.pages.HomePage;
+import com.company.pages.LoginPage;
+import com.company.pages.NavigationBar;
 import com.company.tests.BaseTest;
 import com.company.utils.Constants;
 import lombok.extern.log4j.Log4j2;

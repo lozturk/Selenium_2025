@@ -1,6 +1,5 @@
 package com.company.utils;
 
-import io.qameta.allure.Allure;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -8,8 +7,6 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.Reporter;
-
-import java.io.ByteArrayInputStream;
 
 @Log4j2
 public class TestListener implements ITestListener {

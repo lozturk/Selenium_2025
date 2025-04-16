@@ -12,7 +12,7 @@
 
         <!-- dependency versions -->
         <selenium.java.version>4.30.0</selenium.java.version>
-        <testng.version>7.10.2</testng.version>
+        <testng.version>7.11.0</testng.version>
         <snakeyaml.version>2.3</snakeyaml.version>
         <log4j.version>2.20.0</log4j.version>
         <slf4j.version>2.0.9</slf4j.version>
